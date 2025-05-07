@@ -1,4 +1,3 @@
-// app/events/page.js
 "use client";
 
 import {
@@ -22,111 +21,111 @@ export default function EventsPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Event data
-   const events = [
-     {
-       id: 1,
-       title: "Annual Sports Day",
-       date: "2025-03-24",
-       time: "8:00 AM - 3:00 PM",
-       description:
-         "A day of friendly competition featuring track and field events, team sports, and fun activities for all ages. Parents are welcome to attend and cheer!",
-       category: "sports",
-       image: "/pic40.jpg",
-       registrationLink: "/events/sports-day/register",
-       learnMoreLink: "/events/sports-day",
-     },
-     {
-       id: 2,
-       title: "Science Fair Exhibition",
-       date: "2025-04-15",
-       time: "10:00 AM - 2:00 PM",
-       description:
-         "Students showcase their innovative science projects. Judges from local universities will award prizes in different categories.",
-       category: "academic",
-       image: "/pic47.jpg",
-       registrationLink: "/events/science-fair/register",
-       learnMoreLink: "/events/science-fair",
-     },
-     {
-       id: 3,
-       title: "Cultural Festival",
-       date: "2025-05-08",
-       time: "9:00 AM - 5:00 PM",
-       description:
-         "Celebrating Ghana's rich cultural heritage through music, dance, drama, and art. Traditional food will be available.",
-       category: "cultural",
-       image: "/pic65.jpg",
-       registrationLink: "/events/cultural-festival/register",
-       learnMoreLink: "/events/cultural-festival",
-     },
-     {
-       id: 4,
-       title: "Parent-Teacher Conference",
-       date: "2025-06-12",
-       time: "2:00 PM - 6:00 PM",
-       description:
-         "Opportunity for parents to meet with teachers and discuss student progress. Appointments required.",
-       category: "academic",
-       image: "/pic66.jpg",
-       registrationLink: "/events/parent-teacher/register",
-       learnMoreLink: "/events/parent-teacher",
-     },
-     {
-       id: 5,
-       title: "Graduation Ceremony",
-       date: "2025-07-20",
-       time: "10:00 AM - 12:00 PM",
-       description:
-         "Celebrating our graduating class of 2025. Ceremony followed by reception. Formal attire required.",
-       category: "graduation",
-       image: "/pic44.jpg",
-       registrationLink: "/events/graduation/register",
-       learnMoreLink: "/events/graduation",
-     },
-     {
-       id: 6,
-       title: "Charity Fun Run",
-       date: "2025-08-05",
-       time: "7:00 AM - 10:00 AM",
-       description:
-         "5km fun run to raise funds for school library expansion. Open to students, parents, and community members.",
-       category: "sports",
-       image: "/pic63.jpg",
-       registrationLink: "/events/fun-run/register",
-       learnMoreLink: "/events/fun-run",
-     },
-   ];
-   // Past events data
-   const pastEvents = [
-     {
-       id: 1,
-       title: "Christmas Concert 2024",
-       date: "2024-12-15",
-       description:
-         "Students performed holiday songs and skits to celebrate the season.",
-       image: "/pic64.jpg",
-       galleryLink: "/gallery/christmas-2024",
-     },
-     {
-       id: 2,
-       title: "Math Olympiad 2024",
-       date: "2024-11-10",
-       description:
-         "Our team won 3 gold medals in the regional mathematics competition.",
-       image: "/pic28.jpg",
-       galleryLink: "/gallery/math-olympiad-2024",
-     },
-     {
-       id: 3,
-       title: "Career Day 2024",
-       date: "2024-10-05",
-       description:
-         "Professionals from various fields shared insights with our students.",
-       image: "/pic62.jpg",
-       galleryLink: "/gallery/career-day-2024",
-     },
-   ];
+  const events = [
+    {
+      id: 1,
+      title: "Annual Sports Day",
+      date: "2025-03-24",
+      time: "8:00 AM - 3:00 PM",
+      description:
+        "A day of friendly competition featuring track and field events, team sports, and fun activities for all ages. Parents are welcome to attend and cheer!",
+      category: "sports",
+      image: "/pic40.jpg",
+      registrationLink: "/events/sports-day/register",
+      learnMoreLink: "/events/sports-day",
+    },
+    {
+      id: 2,
+      title: "Science Fair Exhibition",
+      date: "2025-04-15",
+      time: "10:00 AM - 2:00 PM",
+      description:
+        "Students showcase their innovative science projects. Judges from local universities will award prizes in different categories.",
+      category: "academic",
+      image: "/pic47.jpg",
+      registrationLink: "/events/science-fair/register",
+      learnMoreLink: "/events/science-fair",
+    },
+    {
+      id: 3,
+      title: "Cultural Festival",
+      date: "2025-05-08",
+      time: "9:00 AM - 5:00 PM",
+      description:
+        "Celebrating Ghana's rich cultural heritage through music, dance, drama, and art. Traditional food will be available.",
+      category: "cultural",
+      image: "/pic65.jpg",
+      registrationLink: "/events/cultural-festival/register",
+      learnMoreLink: "/events/cultural-festival",
+    },
+    {
+      id: 4,
+      title: "Parent-Teacher Conference",
+      date: "2025-06-12",
+      time: "2:00 PM - 6:00 PM",
+      description:
+        "Opportunity for parents to meet with teachers and discuss student progress. Appointments required.",
+      category: "academic",
+      image: "/pic66.jpg",
+      registrationLink: "/events/parent-teacher/register",
+      learnMoreLink: "/events/parent-teacher",
+    },
+    {
+      id: 5,
+      title: "Graduation Ceremony",
+      date: "2025-07-20",
+      time: "10:00 AM - 12:00 PM",
+      description:
+        "Celebrating our graduating class of 2025. Ceremony followed by reception. Formal attire required.",
+      category: "graduation",
+      image: "/pic44.jpg",
+      registrationLink: "/events/graduation/register",
+      learnMoreLink: "/events/graduation",
+    },
+    {
+      id: 6,
+      title: "Charity Fun Run",
+      date: "2025-08-05",
+      time: "7:00 AM - 10:00 AM",
+      description:
+        "5km fun run to raise funds for school library expansion. Open to students, parents, and community members.",
+      category: "sports",
+      image: "/pic63.jpg",
+      registrationLink: "/events/fun-run/register",
+      learnMoreLink: "/events/fun-run",
+    },
+  ];
 
+  // Past events data
+  const pastEvents = [
+    {
+      id: 1,
+      title: "Christmas Concert 2024",
+      date: "2024-12-15",
+      description:
+        "Students performed holiday songs and skits to celebrate the season.",
+      image: "/pic64.jpg",
+      galleryLink: "/gallery/christmas-2024",
+    },
+    {
+      id: 2,
+      title: "Math Olympiad 2024",
+      date: "2024-11-10",
+      description:
+        "Our team won 3 gold medals in the regional mathematics competition.",
+      image: "/pic28.jpg",
+      galleryLink: "/gallery/math-olympiad-2024",
+    },
+    {
+      id: 3,
+      title: "Career Day 2024",
+      date: "2024-10-05",
+      description:
+        "Professionals from various fields shared insights with our students.",
+      image: "/pic62.jpg",
+      galleryLink: "/gallery/career-day-2024",
+    },
+  ];
 
   // Filter events
   const filteredEvents =
@@ -180,30 +179,22 @@ export default function EventsPage() {
             }}
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  transition: { staggerChildren: 0.1 },
-                }}
-              >
-                {"Our Events".split("").map((char, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{
-                      y: 0,
-                      opacity: 1,
-                      transition: {
-                        duration: 0.5,
-                        delay: i * 0.05 + 0.3,
-                      },
-                    }}
-                  >
-                    {char}
-                  </motion.span>
-                ))}
-              </motion.span>
+              {Array.from("Our Events").map((char, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{
+                    y: 0,
+                    opacity: 1,
+                    transition: {
+                      duration: 0.5,
+                      delay: i * 0.05 + 0.3,
+                    },
+                  }}
+                >
+                  {char}
+                </motion.span>
+              ))}
             </h1>
             <motion.p
               className="text-lg sm:text-xl text-white max-w-2xl mx-auto"
@@ -307,14 +298,14 @@ export default function EventsPage() {
                     />
                   </motion.figure>
                   <div className="card-body p-4 sm:p-6">
-                    <div className="flex justify-between items-start mb-2">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                       <motion.h3
-                        className="card-title text-lg sm:text-xl"
+                        className="card-title text-lg sm:text-xl mb-1 sm:mb-0"
                         whileHover={{ color: "hsl(var(--p))" }}
                       >
                         {event.title}
                       </motion.h3>
-                      <div className="badge badge-primary">
+                      <div className="badge badge-primary self-start">
                         {new Date(event.date).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",

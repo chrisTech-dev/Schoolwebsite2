@@ -1,5 +1,5 @@
 // app/page.js
-"use client"
+"use client";
 
 import {
   FaGraduationCap,
@@ -16,8 +16,6 @@ import {
   FaUsers,
   FaLightbulb,
   FaBookOpen,
-  FaFacebook,
-  FaInstagram
 } from "react-icons/fa";
 import {
   motion,
@@ -37,24 +35,22 @@ export default function Home() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) setShowFloatingNotice(false);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
-   useEffect(() => {
-     const script = document.createElement("script");
-     script.src = "//www.instagram.com/embed.js";
-     script.async = true;
-     document.body.appendChild(script);
-
-     return () => {
-       document.body.removeChild(script);
-     };
-   }, []);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "//www.instagram.com/embed.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => document.body.removeChild(script);
+  }, []);
 
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
@@ -81,9 +77,11 @@ export default function Home() {
             exit={{ height: 0, opacity: 0 }}
             className="bg-accent text-white px-4 py-2 text-center relative z-40"
           >
-            <div className="flex items-center justify-center space-x-2">
-              <span className="font-bold">NOTICE:</span>
-              <span>New admissions open for 2025-2026 academic year!</span>
+            <div className="flex items-center justify-center flex-wrap gap-2">
+              <span className="font-bold text-sm sm:text-base">NOTICE:</span>
+              <span className="text-sm sm:text-base">
+                New admissions open for 2025-2026 academic year!
+              </span>
               <button
                 onClick={() => setShowNoticeBoard(false)}
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-200"
@@ -101,12 +99,10 @@ export default function Home() {
         className="flex flex-col lg:flex-row min-h-screen relative overflow-hidden"
         ref={heroRef}
       >
-        {/* sdfhddjsfdjsdsk sadfujadjlsfjdadsf jsdbjdsfnjdssdbfhbkabsdshxbzhbhbhzsxfjdxhdsfuxbhszv szdxkbkzsfhjbasdfkbhbashdvfhbasdkf */}
         <motion.div
           className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 lg:p-12 relative overflow-hidden min-h-[500px] md:min-h-[600px]"
           style={{ y: isMobile ? 0 : y }}
         >
-          {/* Rich gradient background */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-br from-blue-700 via-purple-800 to-indigo-900"
             initial={{ opacity: 0.9 }}
@@ -120,12 +116,9 @@ export default function Home() {
               repeatType: "reverse",
               ease: "easeInOut",
             }}
-            style={{
-              backgroundSize: "200% 200%",
-            }}
+            style={{ backgroundSize: "200% 200%" }}
           />
 
-          {/* Secondary flowing gradient */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-tl from-transparent via-pink-600 to-transparent"
             initial={{ opacity: 0.15 }}
@@ -139,15 +132,11 @@ export default function Home() {
               repeatType: "reverse",
               ease: "easeInOut",
             }}
-            style={{
-              backgroundSize: "200% 200%",
-            }}
+            style={{ backgroundSize: "200% 200%" }}
           />
 
-          {/* Subtle pattern overlay */}
           <div className="absolute inset-0 opacity-8 bg-[url('/pattern.svg')] bg-repeat"></div>
 
-          {/* Colorful floating decorative elements positioned away from the center text area */}
           <motion.div
             className="absolute top-10 left-10 w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 opacity-70"
             animate={{
@@ -163,13 +152,12 @@ export default function Home() {
             }}
           />
 
-          {/* Triangle shape - bottom left */}
           <motion.div
             className="absolute bottom-20 left-16 w-0 h-0 opacity-70"
             style={{
               borderLeft: "25px solid transparent",
               borderRight: "25px solid transparent",
-              borderBottom: "43px solid rgba(236, 72, 153, 0.7)", // pink-500 with opacity
+              borderBottom: "43px solid rgba(236, 72, 153, 0.7)",
             }}
             animate={{
               y: [0, 15, 0],
@@ -183,7 +171,6 @@ export default function Home() {
             }}
           />
 
-          {/* Diamond shape - right side */}
           <motion.div
             className="absolute top-1/4 right-12 w-16 h-16 opacity-70 bg-gradient-to-br from-amber-400 to-orange-500"
             style={{ transform: "rotate(45deg)" }}
@@ -200,7 +187,6 @@ export default function Home() {
             }}
           />
 
-          {/* Half-circle shape - bottom right */}
           <motion.div
             className="absolute bottom-16 right-20 w-20 h-10 rounded-t-full bg-gradient-to-r from-emerald-400 to-teal-500 opacity-70"
             animate={{
@@ -216,7 +202,6 @@ export default function Home() {
             }}
           />
 
-          {/* Main content positioned with sufficient space from floating elements */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
@@ -228,7 +213,6 @@ export default function Home() {
               animate={isHeroInView ? { scale: 1 } : {}}
               transition={{ duration: 0.5 }}
             >
-              {/* School logo/badge */}
               <motion.div
                 className="w-24 h-24 mx-auto mb-6 relative"
                 initial={{ rotate: -15, scale: 0.8 }}
@@ -262,7 +246,6 @@ export default function Home() {
                 "Nurturing Tomorrow's Leaders Through Excellence and Innovation"
               </div>
 
-              {/* Clearer CTA button with sharper text */}
               <motion.button
                 className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-lg shadow-lg text-lg"
                 whileHover={{
@@ -291,7 +274,6 @@ export default function Home() {
                 </Link>
               </motion.button>
 
-              {/* Different metrics with icons */}
               <motion.div
                 className="mt-12 flex flex-wrap justify-center gap-8"
                 initial={{ opacity: 0, y: 20 }}
@@ -347,11 +329,8 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Colorful floating particles with varied shapes */}
           {[...Array(12)].map((_, i) => {
-            // Create different shapes and colors
             const shapes = [
-              // Circle with gradient
               <div
                 className={`rounded-full bg-gradient-to-br ${
                   i % 3 === 0
@@ -361,8 +340,6 @@ export default function Home() {
                     : "from-amber-400 to-yellow-300"
                 } w-${(i % 3) + 2} h-${(i % 3) + 2}`}
               />,
-
-              // Small square
               <div
                 className={`bg-gradient-to-br ${
                   i % 3 === 0
@@ -373,8 +350,6 @@ export default function Home() {
                 } w-${(i % 2) + 2} h-${(i % 2) + 2}`}
                 style={{ transform: "rotate(45deg)" }}
               />,
-
-              // Tiny star (using CSS border trick)
               <div
                 className={`w-0 h-0 border-l-[5px] border-r-[5px] border-b-[10px] ${
                   i % 3 === 0
@@ -387,7 +362,6 @@ export default function Home() {
               />,
             ];
 
-            // Avoid center area where text is
             const isLeftSide = Math.random() > 0.5;
             const xPosition = isLeftSide
               ? `${Math.random() * 20}%`
@@ -397,10 +371,7 @@ export default function Home() {
               <motion.div
                 key={i}
                 className="absolute opacity-60"
-                style={{
-                  top: `${Math.random() * 100}%`,
-                  left: xPosition,
-                }}
+                style={{ top: `${Math.random() * 100}%`, left: xPosition }}
                 animate={{
                   y: [0, (Math.random() - 0.5) * 50],
                   x: [0, (Math.random() - 0.5) * 50],
@@ -419,8 +390,6 @@ export default function Home() {
             );
           })}
         </motion.div>
-
-        {/* sdfjkasjkdhkjslksdfjhkjldjsfkfbndsnxbcjlkldjsfkbcljsasjldkfbcjhjsbdshfhbjsjdbfibbhadsbchbkkjbjkbxkjcbhjbhszbdxhcbhnd cxnldsfcb */}
 
         <motion.div
           className="w-full lg:w-1/2 h-80 sm:h-96 lg:h-auto bg-cover bg-center relative"
@@ -446,7 +415,6 @@ export default function Home() {
 
       {/* Story Section */}
       <section className="relative" ref={storyRef}>
-        {/* Story Block 1 */}
         <motion.div
           className="min-h-[60vh] md:h-screen flex items-center justify-center bg-cover bg-fixed relative"
           initial={{ opacity: 0 }}
@@ -484,7 +452,6 @@ export default function Home() {
           </motion.div>
         </motion.div>
 
-        {/* Enhanced Our Story Section */}
         <motion.div
           className="py-12 md:py-16 lg:min-h-screen lg:py-16 flex items-center justify-center bg-base-200"
           initial={{ opacity: 0 }}
@@ -628,7 +595,6 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* Unique Features Section */}
         <div className="py-12 md:py-16 lg:min-h-screen flex items-center justify-center bg-primary text-primary-content">
           <div className="text-center p-4 max-w-5xl">
             <motion.h2
@@ -695,7 +661,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Enhanced Vision in Action Section */}
         <div className="h-60 sm:h-80 md:h-screen bg-blue-300 relative">
           <video
             autoPlay
@@ -1041,95 +1006,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* adbfefdsfbhjbsdkxhbahsbhbkjjabdsfhblasdbahsdfbkjsdbadsbfhbfhjabhsdbsbsnhbncd fe */}
-
-        {/* <section className="py-12 bg-base-100"> */}
-          {/* <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-              Connect With Us
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8"> */}
-              {/* Facebook Embed */}
-              {/* <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div className="bg-blue-600 text-white p-4 flex items-center gap-2">
-                  <svg
-                    className="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                  </svg>
-                  <h3 className="text-xl font-bold">Facebook Updates</h3>
-                </div>
-                <div className="p-4">
-                  <div className="flex justify-center">
-                    <iframe
-                      src="https://www.facebook.com/profile.php?id=100088354402488"
-                      width="500"
-                      height="600"
-                      style={{ border: "none", overflow: "hidden" }}
-                      scrolling="no"
-                      frameBorder="0"
-                      allowFullScreen={true}
-                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                      className="w-full"
-                    ></iframe>
-                  </div>
-                </div>
-              </div> */}
-
-              {/* Instagram Embed */}
-              {/* <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-4 flex items-center gap-2">
-                  <svg
-                    className="w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                  </svg>
-                  <h3 className="text-xl font-bold">Instagram Moments</h3>
-                </div>
-                <div className="p-4"> */}
-                  {/* Instagram Post 1 */}
-                  {/* <div className="mb-4">
-                    <blockquote
-                      className="instagram-media"
-                      data-instgrm-permalink="https://www.instagram.com/p/C5jJjXrI5XK/"
-                      data-instgrm-version="14"
-                      data-instgrm-width="100%"
-                    ></blockquote>
-                  </div> */}
-
-                  {/* Instagram Post 2 */}
-                  {/* <div className="mb-4">
-                    <blockquote
-                      className="instagram-media"
-                      data-instgrm-permalink="https://www.instagram.com/p/C5hHkX0o9zM/"
-                      data-instgrm-version="14"
-                      data-instgrm-width="100%"
-                    ></blockquote>
-                  </div>
-
-                  <div className="text-center mt-4">
-                    <a
-                      href="https://instagram.com/HanvilAcademy"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-sm btn-outline btn-secondary"
-                    >
-                      Follow Us on Instagram
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
-        {/* </section> */}
-
-        {/* dgfisdkgyugdsyuixh hdbdhsbdkhbsdbhbhjsbhj  jhdshjbhbhsbh dshghdsj assdghgh shdshasbdjb szdghdshgudguahsiausd asusda asasdou sduqwsyu */}
-
         {/* Footer Content */}
         <div className="mt-8 md:mt-12 pt-6 border-t border-base-300 max-w-4xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -1194,7 +1070,7 @@ export default function Home() {
 
       {/* Floating Notice Board */}
       <AnimatePresence>
-        {showFloatingNotice && !isMobile && (
+        {showFloatingNotice && (
           <motion.div
             className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50"
             initial={{ x: 100, opacity: 0 }}
@@ -1217,30 +1093,36 @@ export default function Home() {
                   <FaTimes />
                 </button>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3 max-h-60 overflow-y-auto">
                 <motion.div
                   className="p-2 bg-white rounded border-l-4 border-red-500"
                   whileHover={{ x: 5 }}
                 >
-                  <p className="font-semibold">Admissions Open</p>
-                  <p className="text-sm">2024-25 academic year</p>
+                  <p className="font-semibold text-sm sm:text-base">
+                    Admissions Open
+                  </p>
+                  <p className="text-xs sm:text-sm">2024-25 academic year</p>
                 </motion.div>
                 <motion.div
                   className="p-2 bg-white rounded border-l-4 border-blue-500"
                   whileHover={{ x: 5 }}
                 >
-                  <p className="font-semibold">Sports Day</p>
-                  <p className="text-sm">15th June, 9 AM</p>
+                  <p className="font-semibold text-sm sm:text-base">
+                    Sports Day
+                  </p>
+                  <p className="text-xs sm:text-sm">15th June, 9 AM</p>
                 </motion.div>
                 <motion.div
                   className="p-2 bg-white rounded border-l-4 border-green-500"
                   whileHover={{ x: 5 }}
                 >
-                  <p className="font-semibold">PTA Meeting</p>
-                  <p className="text-sm">22nd June, 2 PM</p>
+                  <p className="font-semibold text-sm sm:text-base">
+                    PTA Meeting
+                  </p>
+                  <p className="text-xs sm:text-sm">22nd June, 2 PM</p>
                 </motion.div>
               </div>
-              <button className="btn btn-sm btn-outline mt-3 w-full">
+              <button className="btn btn-sm btn-outline mt-3 w-full text-xs sm:text-sm">
                 View All Notices
               </button>
             </motion.div>

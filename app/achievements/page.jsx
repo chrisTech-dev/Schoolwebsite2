@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import {
   FaTrophy,
@@ -15,8 +14,6 @@ import {
 } from "react-icons/fa";
 
 export default function AchievementsPage() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.1 });
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -49,17 +46,9 @@ export default function AchievementsPage() {
   ];
 
   return (
-    <div
-      className="bg-gradient-to-b from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8"
-      ref={ref}
-    >
-      {/* Introduction Section - Mobile Optimized */}
-      <motion.section
-        className="max-w-4xl mx-auto text-center mb-12"
-        initial={{ opacity: 0, y: 30 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6 }}
-      >
+    <div className="bg-gradient-to-b from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
+      {/* Introduction Section */}
+      <section className="max-w-4xl mx-auto text-center mb-12">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-indigo-900 mb-4 px-2">
           Our <span className="text-yellow-600">Achievements</span>
         </h1>
@@ -69,15 +58,10 @@ export default function AchievementsPage() {
           milestones."
         </p>
         <div className="w-20 h-1 bg-yellow-500 mx-auto"></div>
-      </motion.section>
+      </section>
 
-      {/* Academic Achievements - Stack on Mobile */}
-      <motion.section
-        className="max-w-6xl mx-auto mb-16"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.2 }}
-      >
+      {/* Academic Achievements */}
+      <section className="max-w-6xl mx-auto mb-16">
         <div className="flex items-center mb-6 px-2">
           <FaGraduationCap className="text-3xl text-indigo-700 mr-3" />
           <h2 className="text-2xl md:text-3xl font-bold text-indigo-900">
@@ -91,32 +75,24 @@ export default function AchievementsPage() {
             title="BECE Excellence"
             description="100% pass rate for 5 consecutive years (2019-2023)"
             color="yellow"
-            isMobile={isMobile}
           />
           <AchievementCard
             icon={<FaMedal className="text-4xl md:text-5xl" />}
             title="Quiz Champions"
             description="Regional Science & Math Quiz champions 2020, 2022"
             color="blue"
-            isMobile={isMobile}
           />
           <AchievementCard
             icon={<FaGraduationCap className="text-4xl md:text-5xl" />}
             title="Top Performers"
             description="5 students ranked in top 10 of district BECE results"
             color="green"
-            isMobile={isMobile}
           />
         </div>
-      </motion.section>
+      </section>
 
-      {/* Sports & Athletics - Single Column on Mobile */}
-      <motion.section
-        className="max-w-6xl mx-auto mb-16"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.4 }}
-      >
+      {/* Sports & Athletics */}
+      <section className="max-w-6xl mx-auto mb-16">
         <div className="flex items-center mb-6 px-2">
           <FaRunning className="text-3xl text-indigo-700 mr-3" />
           <h2 className="text-2xl md:text-3xl font-bold text-indigo-900">
@@ -130,32 +106,24 @@ export default function AchievementsPage() {
             alt="Sports Trophy"
             title="District Champions"
             description="Winners of inter-school athletics competition 3 years running"
-            isMobile={isMobile}
           />
           <ImageCard
             src="/pic51.jpg"
             alt="Football Team"
             title="Football Excellence"
             description="Junior football team placed 2nd in regional tournament"
-            isMobile={isMobile}
           />
           <ImageCard
             src="/pic26.jpg"
             alt="Athletics"
             title="Individual Honors"
             description="12 gold, 8 silver, and 5 bronze medals in district events"
-            isMobile={isMobile}
           />
         </div>
-      </motion.section>
+      </section>
 
-      {/* Cultural & Creative - Stack on Mobile */}
-      <motion.section
-        className="max-w-6xl mx-auto mb-16"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.6 }}
-      >
+      {/* Cultural & Creative */}
+      <section className="max-w-6xl mx-auto mb-16">
         <div className="flex items-center mb-6 px-2">
           <FaMusic className="text-3xl text-indigo-700 mr-3" />
           <h2 className="text-2xl md:text-3xl font-bold text-indigo-900">
@@ -178,8 +146,20 @@ export default function AchievementsPage() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2 sm:gap-4">
-              <ResponsiveImage src="/pic52.jpg" alt="Art Exhibition" />
-              <ResponsiveImage src="/pic54.jpg" alt="Student Art" />
+              <Image
+                src="/pic52.jpg"
+                alt="Art Exhibition"
+                width={500}
+                height={300}
+                className="rounded-lg object-cover h-full w-full"
+              />
+              <Image
+                src="/pic54.jpg"
+                alt="Student Art"
+                width={500}
+                height={300}
+                className="rounded-lg object-cover h-full w-full"
+              />
             </div>
           </div>
 
@@ -196,23 +176,20 @@ export default function AchievementsPage() {
               </div>
             </div>
             <div className="aspect-w-16 aspect-h-9 relative">
-              <ResponsiveImage
+              <Image
                 src="/pic64.jpg"
                 alt="Drama Performance"
-                className="rounded-lg"
+                width={800}
+                height={450}
+                className="rounded-lg object-cover"
               />
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Staff & School Recognition - Adjusted for Mobile */}
-      <motion.section
-        className="max-w-6xl mx-auto mb-16"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.8 }}
-      >
+      {/* Staff & School Recognition */}
+      <section className="max-w-6xl mx-auto mb-16">
         <div className="flex items-center mb-6 px-2">
           <FaChalkboardTeacher className="text-3xl text-indigo-700 mr-3" />
           <h2 className="text-2xl md:text-3xl font-bold text-indigo-900">
@@ -251,10 +228,12 @@ export default function AchievementsPage() {
                     Recognized by Ghana Education Service as "Model School for
                     Inclusive Education"
                   </p>
-                  <ResponsiveImage
+                  <Image
                     src="/pic31.jpg"
                     alt="GES Award"
-                    className="rounded-lg"
+                    width={400}
+                    height={300}
+                    className="rounded-lg object-cover"
                   />
                 </div>
                 <div>
@@ -262,47 +241,35 @@ export default function AchievementsPage() {
                     Featured in Ghana Education Times for innovative ICT
                     integration
                   </p>
-                  <ResponsiveImage
+                  <Image
                     src="/pic66.jpg"
                     alt="Media Feature"
-                    className="rounded-lg"
+                    width={400}
+                    height={300}
+                    className="rounded-lg object-cover"
                   />
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
 
-      {/* Stats Section - Adjusted for Mobile */}
-      <motion.section
-        className="max-w-6xl mx-auto mb-16 bg-indigo-900 text-white rounded-xl p-4 sm:p-6 shadow-2xl"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 1 }}
-      >
+      {/* Stats Section */}
+      <section className="max-w-6xl mx-auto mb-16 bg-indigo-900 text-white rounded-xl p-4 sm:p-6 shadow-2xl">
         <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
           By The Numbers
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 text-center">
-          <StatBox number="150+" label="BECE Graduates" isMobile={isMobile} />
-          <StatBox number="20+" label="Academic Trophies" isMobile={isMobile} />
-          <StatBox number="10+" label="Regional Awards" isMobile={isMobile} />
-          <StatBox
-            number="5"
-            label="Years 100% Pass Rate"
-            isMobile={isMobile}
-          />
+          <StatBox number="150+" label="BECE Graduates" />
+          <StatBox number="20+" label="Academic Trophies" />
+          <StatBox number="10+" label="Regional Awards" />
+          <StatBox number="5" label="Years 100% Pass Rate" />
         </div>
-      </motion.section>
+      </section>
 
-      {/* Testimonials - Stack on Mobile */}
-      <motion.section
-        className="max-w-4xl mx-auto mb-16"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 1.2 }}
-      >
+      {/* Testimonials */}
+      <section className="max-w-4xl mx-auto mb-16">
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-indigo-900 px-2">
           Success Stories
         </h2>
@@ -312,43 +279,32 @@ export default function AchievementsPage() {
             name="Kwabena Osei"
             year="2019 Graduate"
             image="/pic55.jpg"
-            isMobile={isMobile}
           />
           <TestimonialCard
             quote="The arts program helped me discover my talent in painting. After winning the national competition, I got an art scholarship."
             name="Ama Serwaa"
             year="2021 Graduate"
             image="/pic57.jpg"
-            isMobile={isMobile}
           />
         </div>
-      </motion.section>
+      </section>
 
-      {/* Timeline - Full Width on Mobile */}
-      <motion.section
-        className="max-w-4xl mx-auto mb-16 px-2"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 1.4 }}
-      >
+      {/* Timeline */}
+      <section className="max-w-4xl mx-auto mb-16 px-2">
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-indigo-900">
           Our Journey
         </h2>
         <div className="relative">
-          {/* Timeline line - Hidden on mobile */}
           {!isMobile && (
             <div className="absolute left-1/2 h-full w-0.5 bg-indigo-300 transform -translate-x-1/2"></div>
           )}
 
           {achievements.map((item, index) => (
-            <motion.div
+            <div
               key={index}
               className={`mb-6 w-full ${
                 isMobile ? "pl-6 border-l-2 border-indigo-300" : ""
               }`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.6 + index * 0.2 }}
             >
               <div
                 className={`w-full p-4 sm:p-6 rounded-xl shadow-lg ${getCategoryColor(
@@ -369,18 +325,13 @@ export default function AchievementsPage() {
                   {getCategoryDescription(item.category)}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.section>
+      </section>
 
-      {/* Gallery Section - 2 Columns on Mobile */}
-      <motion.section
-        className="max-w-6xl mx-auto px-2"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : {}}
-        transition={{ delay: 1.8 }}
-      >
+      {/* Gallery Section */}
+      <section className="max-w-6xl mx-auto px-2">
         <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 text-indigo-900">
           Gallery of Achievements
         </h2>
@@ -395,41 +346,26 @@ export default function AchievementsPage() {
             "/pic27.jpg",
             "/pic30.jpg",
           ].map((img, index) => (
-            <motion.div
+            <div
               key={index}
               className="aspect-square relative overflow-hidden rounded-lg shadow-md"
-              whileHover={{ scale: isMobile ? 1 : 1.03 }}
             >
-              <ResponsiveImage
+              <Image
                 src={img}
                 alt="Achievement"
+                fill
                 className="object-cover"
               />
-            </motion.div>
+            </div>
           ))}
         </div>
-      </motion.section>
+      </section>
     </div>
   );
 }
 
-// Component for responsive images
-function ResponsiveImage({ src, alt, className = "" }) {
-  return (
-    <div className="w-full h-full relative">
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        className={`object-cover ${className}`}
-        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      />
-    </div>
-  );
-}
-
-// Component for achievement cards
-function AchievementCard({ icon, title, description, color, isMobile }) {
+// Achievement Card Component
+function AchievementCard({ icon, title, description, color }) {
   const colorClasses = {
     yellow: "border-yellow-500 text-yellow-600",
     blue: "border-blue-500 text-blue-600",
@@ -437,71 +373,61 @@ function AchievementCard({ icon, title, description, color, isMobile }) {
   };
 
   return (
-    <motion.div
+    <div
       className={`bg-white p-4 sm:p-6 rounded-xl shadow-lg border-l-4 ${colorClasses[color]}`}
-      whileHover={{ y: isMobile ? 0 : -5 }}
     >
       <div className={`${colorClasses[color]} mb-3`}>{icon}</div>
       <h3 className="text-lg sm:text-xl font-bold mb-2">{title}</h3>
       <p className="text-gray-600 text-sm sm:text-base">{description}</p>
-    </motion.div>
+    </div>
   );
 }
 
-// Component for image cards
-function ImageCard({ src, alt, title, description, isMobile }) {
+// Image Card Component
+function ImageCard({ src, alt, title, description }) {
   return (
-    <motion.div
-      className="bg-white rounded-xl shadow-lg overflow-hidden"
-      whileHover={{ scale: isMobile ? 1 : 1.02 }}
-    >
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       <div className="aspect-video relative">
-        <ResponsiveImage src={src} alt={alt} />
+        <Image src={src} alt={alt} fill className="object-cover" />
       </div>
       <div className="p-4 sm:p-6">
         <h3 className="text-lg sm:text-xl font-bold mb-2">{title}</h3>
         <p className="text-gray-600 text-sm sm:text-base">{description}</p>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// Component for stats
-function StatBox({ number, label, isMobile }) {
+// Stat Box Component
+function StatBox({ number, label }) {
   return (
-    <motion.div
-      className="p-2 sm:p-4"
-      whileHover={{ scale: isMobile ? 1 : 1.05 }}
-    >
+    <div className="p-2 sm:p-4">
       <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-yellow-400 mb-1 sm:mb-2">
         {number}
       </div>
       <div className="text-xs sm:text-sm md:text-base">{label}</div>
-    </motion.div>
+    </div>
   );
 }
 
-// Component for testimonials
-function TestimonialCard({ quote, name, year, image, isMobile }) {
+// Testimonial Card Component
+function TestimonialCard({ quote, name, year, image }) {
   return (
-    <motion.div
-      className="bg-white p-4 sm:p-6 rounded-xl shadow-lg relative"
-      whileHover={{ y: isMobile ? 0 : -5 }}
-    >
+    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg relative">
       <FaQuoteLeft className="text-3xl sm:text-4xl text-indigo-100 absolute top-3 right-3" />
       <p className="text-base sm:text-lg italic mb-4 relative z-10">
         "{quote}"
       </p>
       <div className="flex items-center">
-        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-indigo-200 mr-3 overflow-hidden">
-          <ResponsiveImage src={image} alt={name} />
+        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-indigo-200 mr-3 overflow-hidden relative">
+          <Image src={image} alt={name} fill className="object-cover" />
         </div>
         <div>
           <div className="font-bold text-sm sm:text-base">{name}</div>
           <div className="text-gray-500 text-xs sm:text-sm">{year}</div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
