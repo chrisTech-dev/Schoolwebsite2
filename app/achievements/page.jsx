@@ -53,9 +53,9 @@ export default function AchievementsPage() {
           Our <span className="text-yellow-600">Achievements</span>
         </h1>
         <p className="text-lg md:text-xl text-gray-700 mb-6 leading-relaxed px-2">
-          "At Hanvil Academy, we believe in nurturing excellence. Over the
+          At Hanvil Academy, we believe in nurturing excellence. Over the
           years, our students, staff, and programs have reached remarkable
-          milestones."
+          milestones.
         </p>
         <div className="w-20 h-1 bg-yellow-500 mx-auto"></div>
       </section>
@@ -106,6 +106,7 @@ export default function AchievementsPage() {
             alt="Sports Trophy"
             title="District Champions"
             description="Winners of inter-school athletics competition 3 years running"
+            
           />
           <ImageCard
             src="/pic51.jpg"
