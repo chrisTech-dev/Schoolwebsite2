@@ -177,6 +177,8 @@ export default function OurStory() {
         </motion.div>
       </section>
 
+      {/* sgdsfgiusilusdfehshdfus asdfidsdf esdfuigfiushdfuog asdfuhsudlksdfsdf sdfsdfuisdf  */}
+
       {/* Growth Journey */}
       <section className="py-12 sm:py-16 bg-base-200">
         <div className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
@@ -192,10 +194,9 @@ export default function OurStory() {
 
           {/* Timeline */}
           <div className="relative">
-            {/* Timeline line - hidden on mobile, visible on desktop */}
+            {/* Timeline line */}
             <div className="hidden md:block absolute left-1/2 h-full w-1 bg-primary transform -translate-x-1/2"></div>
 
-            {/* Timeline items */}
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -224,7 +225,7 @@ export default function OurStory() {
                           {milestone.title}
                         </h3>
                       </div>
-                      <p className="text-sm sm:text-base text-gray-700">
+                      <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
                         {milestone.description}
                       </p>
                       <div className="mt-3 sm:mt-4 font-bold text-primary">
@@ -232,7 +233,6 @@ export default function OurStory() {
                       </div>
                     </div>
                   </div>
-                  {/* Empty div for spacing in desktop layout */}
                   <div className="hidden md:block w-1/2"></div>
                 </motion.div>
               ))}
@@ -297,13 +297,15 @@ export default function OurStory() {
               <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">
                 {value.title}
               </h3>
-              <p className="text-sm sm:text-base text-gray-700">
+              <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
                 {value.description}
               </p>
             </motion.div>
           ))}
         </motion.div>
       </section>
+
+      {/* ashdfghliahlsdfgiusedfighiodsioausgdfiugjfgdshkdgfgiuiosaksdbfghiesdkfjg sdfighis */}
 
       {/* Community Impact */}
       <section className="py-12 sm:py-16 bg-primary text-primary-content">

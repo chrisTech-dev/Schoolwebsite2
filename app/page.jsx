@@ -32,6 +32,22 @@ export default function Home() {
   const [showNoticeBoard, setShowNoticeBoard] = useState(true);
   const [showFloatingNotice, setShowFloatingNotice] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check system color scheme preference
+    const darkModeMediaQuery = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    );
+    setIsDarkMode(darkModeMediaQuery.matches);
+
+    const handleChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    darkModeMediaQuery.addEventListener("change", handleChange);
+    return () => darkModeMediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -67,7 +83,10 @@ export default function Home() {
   const isSplitInView = useInView(splitRef, { once: false, amount: 0.5 });
 
   return (
-    <div className="min-h-screen overflow-x-hidden" ref={containerRef}>
+    <div
+      className={`min-h-screen overflow-x-hidden ${isDarkMode ? "dark" : ""}`}
+      ref={containerRef}
+    >
       {/* Notice Board Banner */}
       <AnimatePresence>
         {showNoticeBoard && (
@@ -453,7 +472,7 @@ export default function Home() {
         </motion.div>
 
         <motion.div
-          className="py-12 md:py-16 lg:min-h-screen lg:py-16 flex items-center justify-center bg-base-200"
+          className="py-12 md:py-16 lg:min-h-screen lg:py-16 flex items-center justify-center bg-base-200 dark:bg-gray-900"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1 }}
@@ -461,7 +480,7 @@ export default function Home() {
         >
           <div className="w-full max-w-6xl px-4">
             <motion.h2
-              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 md:mb-12 text-center"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 md:mb-12 text-center dark:text-white"
               initial={{ y: -50, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -471,7 +490,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <motion.div
-                className="bg-white rounded-xl shadow-lg overflow-hidden"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -482,9 +501,11 @@ export default function Home() {
                     <div className="bg-primary text-white p-3 rounded-full mr-4">
                       <FaCalendarAlt className="text-xl" />
                     </div>
-                    <h3 className="text-xl font-bold">Our History</h3>
+                    <h3 className="text-xl font-bold dark:text-white">
+                      Our History
+                    </h3>
                   </div>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-300">
                     Founded in 2005 with just 50 students, we've grown into one
                     of the region's most respected educational institutions.
                   </p>
@@ -492,7 +513,7 @@ export default function Home() {
               </motion.div>
 
               <motion.div
-                className="bg-white rounded-xl shadow-lg overflow-hidden"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -503,9 +524,11 @@ export default function Home() {
                     <div className="bg-secondary text-white p-3 rounded-full mr-4">
                       <FaAward className="text-xl" />
                     </div>
-                    <h3 className="text-xl font-bold">Key Milestones</h3>
+                    <h3 className="text-xl font-bold dark:text-white">
+                      Key Milestones
+                    </h3>
                   </div>
-                  <ul className="space-y-2 text-gray-600">
+                  <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                     <li className="flex items-start">
                       <span className="text-primary mr-2">•</span>
                       <span>2010: First BECE batch with 100% pass rate</span>
@@ -523,7 +546,7 @@ export default function Home() {
               </motion.div>
 
               <motion.div
-                className="bg-white rounded-xl shadow-lg overflow-hidden"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
@@ -534,9 +557,11 @@ export default function Home() {
                     <div className="bg-accent text-white p-3 rounded-full mr-4">
                       <FaUsers className="text-xl" />
                     </div>
-                    <h3 className="text-xl font-bold">Our Community</h3>
+                    <h3 className="text-xl font-bold dark:text-white">
+                      Our Community
+                    </h3>
                   </div>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-300">
                     We're more than a school - we're a family. Our alumni
                     network spans across Ghana and beyond.
                   </p>
@@ -545,17 +570,17 @@ export default function Home() {
                       <div className="text-2xl font-bold text-primary">
                         500+
                       </div>
-                      <div className="text-sm">Students</div>
+                      <div className="text-sm dark:text-gray-300">Students</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-secondary">
                         50+
                       </div>
-                      <div className="text-sm">Staff</div>
+                      <div className="text-sm dark:text-gray-300">Staff</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-accent">18+</div>
-                      <div className="text-sm">Years</div>
+                      <div className="text-sm dark:text-gray-300">Years</div>
                     </div>
                   </div>
                 </div>
@@ -595,7 +620,7 @@ export default function Home() {
           </div>
         </motion.div>
 
-        <div className="py-12 md:py-16 lg:min-h-screen flex items-center justify-center bg-primary text-primary-content">
+        <div className="py-12 md:py-16 lg:min-h-screen flex items-center justify-center bg-primary text-primary-content dark:bg-gray-800">
           <div className="text-center p-4 max-w-5xl">
             <motion.h2
               className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 md:mb-10"
@@ -696,7 +721,7 @@ export default function Home() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                   <motion.div
-                    className="bg-white bg-opacity-90 rounded-lg p-6 text-gray-800"
+                    className="bg-white bg-opacity-90 rounded-lg p-6 text-gray-800 dark:text-gray-800"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
@@ -715,7 +740,7 @@ export default function Home() {
                   </motion.div>
 
                   <motion.div
-                    className="bg-white bg-opacity-90 rounded-lg p-6 text-gray-800"
+                    className="bg-white bg-opacity-90 rounded-lg p-6 text-gray-800 dark:text-gray-800"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
@@ -734,7 +759,7 @@ export default function Home() {
                   </motion.div>
 
                   <motion.div
-                    className="bg-white bg-opacity-90 rounded-lg p-6 text-gray-800"
+                    className="bg-white bg-opacity-90 rounded-lg p-6 text-gray-800 dark:text-gray-800"
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.6 }}
@@ -880,7 +905,7 @@ export default function Home() {
 
       {/* Footer */}
       <motion.footer
-        className="bg-base-200 py-8 md:py-12"
+        className="bg-base-200 dark:bg-gray-900 py-8 md:py-12"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -888,7 +913,7 @@ export default function Home() {
       >
         <div className="px-4 md:px-8 max-w-6xl mx-auto">
           <motion.h3
-            className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 md:mb-10"
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 md:mb-10 dark:text-white"
             initial={{ y: -30 }}
             whileInView={{ y: 0 }}
             transition={{ duration: 0.5 }}
@@ -927,7 +952,7 @@ export default function Home() {
                     {item.year}
                   </motion.div>
                   <motion.div
-                    className="bg-white p-2 md:p-3 rounded-lg shadow-md w-24 md:w-40 text-sm md:text-base"
+                    className="bg-white dark:bg-gray-800 p-2 md:p-3 rounded-lg shadow-md w-24 md:w-40 text-sm md:text-base dark:text-white"
                     whileHover={{ y: -5 }}
                   >
                     {item.event}
@@ -965,13 +990,13 @@ export default function Home() {
                       {item.year}
                     </motion.div>
                     <motion.div
-                      className="bg-white p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-xs"
+                      className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-xs dark:text-white"
                       whileHover={{ y: -5 }}
                     >
                       <h4 className="text-lg sm:text-xl font-bold mb-2">
                         {item.event}
                       </h4>
-                      <p className="text-gray-600 text-sm sm:text-base">
+                      <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
                         {item.event === "Founded" &&
                           "Our school's humble beginnings with a vision for excellence."}
                         {item.event === "First BECE batch" &&
@@ -1007,7 +1032,7 @@ export default function Home() {
         </div>
 
         {/* Footer Content */}
-        <div className="mt-8 md:mt-12 pt-6 border-t border-base-300 max-w-4xl mx-auto px-4">
+        <div className="mt-8 md:mt-12 pt-6 border-t border-base-300 dark:border-gray-700 max-w-4xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -1015,8 +1040,12 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="text-center md:text-left"
             >
-              <h4 className="text-lg font-bold mb-2">Hanvil Academy</h4>
-              <p className="text-sm">Nurturing Tomorrow's Leaders Since 2005</p>
+              <h4 className="text-lg font-bold mb-2 dark:text-white">
+                Hanvil Academy
+              </h4>
+              <p className="text-sm dark:text-gray-300">
+                Nurturing Tomorrow's Leaders Since 2005
+              </p>
             </motion.div>
 
             <motion.div
@@ -1027,7 +1056,11 @@ export default function Home() {
             >
               {["About", "Academics", "Admissions", "Contact"].map(
                 (link, i) => (
-                  <a key={i} href="#" className="link link-hover text-sm">
+                  <a
+                    key={i}
+                    href="#"
+                    className="link link-hover text-sm dark:text-gray-300"
+                  >
                     {link}
                   </a>
                 )
@@ -1041,22 +1074,26 @@ export default function Home() {
               className="text-center md:text-right"
             >
               <div className="flex items-center justify-center md:justify-end gap-2 mb-1">
-                <FaPhone className="text-sm" />
-                <span className="text-sm">+233 24 123 4567</span>
+                <FaPhone className="text-sm dark:text-gray-300" />
+                <span className="text-sm dark:text-gray-300">
+                  +233 24 123 4567
+                </span>
               </div>
               <div className="flex items-center justify-center md:justify-end gap-2 mb-1">
-                <FaEnvelope className="text-sm" />
-                <span className="text-sm">info@Hanvil Academy.edu.gh</span>
+                <FaEnvelope className="text-sm dark:text-gray-300" />
+                <span className="text-sm dark:text-gray-300">
+                  info@Hanvil Academy.edu.gh
+                </span>
               </div>
               <div className="flex items-center justify-center md:justify-end gap-2">
-                <FaMapMarkerAlt className="text-sm" />
-                <span className="text-sm">Accra, Ghana</span>
+                <FaMapMarkerAlt className="text-sm dark:text-gray-300" />
+                <span className="text-sm dark:text-gray-300">Accra, Ghana</span>
               </div>
             </motion.div>
           </div>
 
           <motion.div
-            className="text-center mt-6 text-sm"
+            className="text-center mt-6 text-sm dark:text-gray-400"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -1079,50 +1116,56 @@ export default function Home() {
             transition={{ delay: 1.5, type: "spring" }}
           >
             <motion.div
-              className="bg-yellow-50 p-4 rounded-lg shadow-xl w-64 border-2 border-yellow-200 relative"
+              className="bg-yellow-50 dark:bg-gray-800 p-4 rounded-lg shadow-xl w-64 border-2 border-yellow-200 dark:border-gray-700 relative"
               whileHover={{ y: -5 }}
             >
               <div className="flex justify-between items-center mb-3">
-                <h3 className="text-lg font-bold text-center underline">
+                <h3 className="text-lg font-bold text-center underline dark:text-white">
                   Notice Board
                 </h3>
                 <button
                   onClick={() => setShowFloatingNotice(false)}
-                  className="text-gray-500 hover:text-gray-700 absolute top-2 right-2"
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 absolute top-2 right-2"
                 >
                   <FaTimes />
                 </button>
               </div>
               <div className="space-y-3 max-h-60 overflow-y-auto">
                 <motion.div
-                  className="p-2 bg-white rounded border-l-4 border-red-500"
+                  className="p-2 bg-white dark:bg-gray-700 rounded border-l-4 border-red-500"
                   whileHover={{ x: 5 }}
                 >
-                  <p className="font-semibold text-sm sm:text-base">
+                  <p className="font-semibold text-sm sm:text-base dark:text-white">
                     Admissions Open
                   </p>
-                  <p className="text-xs sm:text-sm">2024-25 academic year</p>
+                  <p className="text-xs sm:text-sm dark:text-gray-300">
+                    2024-25 academic year
+                  </p>
                 </motion.div>
                 <motion.div
-                  className="p-2 bg-white rounded border-l-4 border-blue-500"
+                  className="p-2 bg-white dark:bg-gray-700 rounded border-l-4 border-blue-500"
                   whileHover={{ x: 5 }}
                 >
-                  <p className="font-semibold text-sm sm:text-base">
+                  <p className="font-semibold text-sm sm:text-base dark:text-white">
                     Sports Day
                   </p>
-                  <p className="text-xs sm:text-sm">15th June, 9 AM</p>
+                  <p className="text-xs sm:text-sm dark:text-gray-300">
+                    15th June, 9 AM
+                  </p>
                 </motion.div>
                 <motion.div
-                  className="p-2 bg-white rounded border-l-4 border-green-500"
+                  className="p-2 bg-white dark:bg-gray-700 rounded border-l-4 border-green-500"
                   whileHover={{ x: 5 }}
                 >
-                  <p className="font-semibold text-sm sm:text-base">
+                  <p className="font-semibold text-sm sm:text-base dark:text-white">
                     PTA Meeting
                   </p>
-                  <p className="text-xs sm:text-sm">22nd June, 2 PM</p>
+                  <p className="text-xs sm:text-sm dark:text-gray-300">
+                    22nd June, 2 PM
+                  </p>
                 </motion.div>
               </div>
-              <button className="btn btn-sm btn-outline mt-3 w-full text-xs sm:text-sm">
+              <button className="btn btn-sm btn-outline mt-3 w-full text-xs sm:text-sm dark:text-white dark:border-gray-600 dark:hover:bg-gray-700">
                 View All Notices
               </button>
             </motion.div>

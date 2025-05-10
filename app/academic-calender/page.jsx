@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   FaDownload,
@@ -13,6 +13,25 @@ import {
 export default function AcademicCalendarPage() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.1 });
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check for dark mode preference
+    const darkModeMediaQuery = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    );
+    setIsDarkMode(darkModeMediaQuery.matches);
+
+    const handleDarkModeChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    darkModeMediaQuery.addEventListener("change", handleDarkModeChange);
+
+    return () => {
+      darkModeMediaQuery.removeEventListener("change", handleDarkModeChange);
+    };
+  }, []);
 
   // Academic calendar data
   const academicYear = {
@@ -52,7 +71,9 @@ export default function AcademicCalendarPage() {
 
   return (
     <div
-      className="bg-gradient-to-b from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8"
+      className={`${
+        isDarkMode ? "dark" : ""
+      } bg-gradient-to-b from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8`}
       ref={ref}
     >
       {/* Hero Section */}
@@ -63,12 +84,13 @@ export default function AcademicCalendarPage() {
         transition={{ duration: 0.8 }}
       >
         <motion.h1
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-indigo-900 mb-6"
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-indigo-900 dark:text-white mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          Academic <span className="text-yellow-600">Calendar</span>
+          Academic{" "}
+          <span className="text-yellow-600 dark:text-yellow-400">Calendar</span>
         </motion.h1>
 
         <motion.div
@@ -77,8 +99,8 @@ export default function AcademicCalendarPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="absolute -inset-4 bg-blue-100 rounded-xl opacity-0 group-hover:opacity-100 blur-md transition duration-300"></div>
-          <p className="text-xl md:text-2xl text-gray-700 leading-relaxed relative z-10">
+          <div className="absolute -inset-4 bg-blue-100 dark:bg-gray-800 rounded-xl opacity-0 group-hover:opacity-100 blur-md transition duration-300"></div>
+          <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed relative z-10">
             "Below is our official academic calendar for the {academicYear.year}{" "}
             school year, based on the Ghana Education Service (GES) schedule.
             Please note that dates are subject to change."
@@ -106,14 +128,14 @@ export default function AcademicCalendarPage() {
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <FaCalendarAlt className="text-3xl text-indigo-700 mr-4" />
-          <h2 className="text-2xl md:text-3xl font-bold text-indigo-900">
+          <FaCalendarAlt className="text-3xl text-indigo-700 dark:text-indigo-400 mr-4" />
+          <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white">
             Term Dates
           </h2>
         </motion.div>
 
         <motion.div
-          className="bg-white rounded-2xl shadow-xl overflow-hidden"
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.7 }}
@@ -121,7 +143,7 @@ export default function AcademicCalendarPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-indigo-800 text-white">
+                <tr className="bg-indigo-800 dark:bg-indigo-900 text-white">
                   <th className="px-6 py-4 text-left font-semibold">Term</th>
                   <th className="px-6 py-4 text-left font-semibold">
                     Reopening Date
@@ -134,25 +156,256 @@ export default function AcademicCalendarPage() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {academicYear.terms.map((term, index) => (
                   <motion.tr
                     key={index}
-                    className="hover:bg-indigo-50 transition-colors"
+                    className="hover:bg-indigo-50 dark:hover:bg-gray-700 transition-colors"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8 + index * 0.1 }}
                   >
-                    <td className="px-6 py-4 font-medium text-indigo-900">
+                    <td className="px-6 py-4 font-medium text-indigo-900 dark:text-white">
                       {term.name}
                     </td>
-                    <td className="px-6 py-4">{term.reopening}</td>
-                    <td className="px-6 py-4">{term.midTermBreak}</td>
-                    <td className="px-6 py-4">{term.vacation}</td>
+                    <td className="px-6 py-4 dark:text-gray-300">
+                      {term.reopening}
+                    </td>
+                    <td className="px-6 py-4 dark:text-gray-300">
+                      {term.midTermBreak}
+                    </td>
+                    <td className="px-6 py-4 dark:text-gray-300">
+                      {term.vacation}
+                    </td>
                   </motion.tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        </motion.div>
+      </motion.section>
+
+      {/* Visual Calendar Section */}
+      <motion.section
+        className="max-w-6xl mx-auto mb-20"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ delay: 0.4 }}
+      >
+        <motion.div
+          className="flex items-center mb-8"
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
+          <FaCalendarAlt className="text-3xl text-indigo-700 dark:text-indigo-400 mr-4" />
+          <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white">
+            Visual Calendar
+          </h2>
+        </motion.div>
+
+        <motion.div
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-6"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8 }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Term 1 Calendar */}
+            <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <div className="bg-indigo-600 dark:bg-indigo-800 p-3 text-white text-center font-bold">
+                Term 1 (Jan - Apr)
+              </div>
+              <div className="p-4">
+                <div className="grid grid-cols-7 gap-1 text-center text-sm mb-2">
+                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                    (day) => (
+                      <div
+                        key={day}
+                        className="font-medium text-indigo-800 dark:text-indigo-300"
+                      >
+                        {day}
+                      </div>
+                    )
+                  )}
+                </div>
+                <div className="grid grid-cols-7 gap-1">
+                  {Array.from({ length: 31 }).map((_, i) => {
+                    const date = i + 1;
+                    let className = "p-2 text-center rounded";
+                    if (date === 9)
+                      className += " bg-green-100 dark:bg-green-900 font-bold";
+                    if (date >= 28 && date <= 4)
+                      className += " bg-yellow-100 dark:bg-yellow-900";
+                    if (date === 7) className += " bg-red-100 dark:bg-red-900";
+                    if (date >= 1 && date <= 10)
+                      className += " bg-blue-100 dark:bg-blue-900";
+                    return (
+                      <div key={date} className={className}>
+                        {date <= 31 ? date : ""}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-4 text-sm space-y-2">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-green-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      School Reopens (Jan 9)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-yellow-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      Mid-Term Break (Feb 28 - Mar 4)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-red-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      Independence Day (Mar 7)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-blue-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      End-of-Term Exams (Apr 1-10)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Term 2 Calendar */}
+            <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <div className="bg-indigo-600 dark:bg-indigo-800 p-3 text-white text-center font-bold">
+                Term 2 (May - Jul)
+              </div>
+              <div className="p-4">
+                <div className="grid grid-cols-7 gap-1 text-center text-sm mb-2">
+                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                    (day) => (
+                      <div
+                        key={day}
+                        className="font-medium text-indigo-800 dark:text-indigo-300"
+                      >
+                        {day}
+                      </div>
+                    )
+                  )}
+                </div>
+                <div className="grid grid-cols-7 gap-1">
+                  {Array.from({ length: 31 }).map((_, i) => {
+                    const date = i + 1;
+                    let className = "p-2 text-center rounded";
+                    if (date === 6)
+                      className += " bg-green-100 dark:bg-green-900 font-bold";
+                    if (date >= 20 && date <= 24)
+                      className += " bg-yellow-100 dark:bg-yellow-900";
+                    if (date === 1) className += " bg-red-100 dark:bg-red-900";
+                    if (date >= 15 && date <= 20)
+                      className += " bg-blue-100 dark:bg-blue-900";
+                    return (
+                      <div key={date} className={className}>
+                        {date <= 31 ? date : ""}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-4 text-sm space-y-2">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-green-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      School Reopens (May 6)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-yellow-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      Mid-Term Break (Jun 20-24)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-red-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      Workers' Day (May 1)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-blue-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      BECE Mock Exams (Jul 15-20)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Term 3 Calendar */}
+            <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <div className="bg-indigo-600 dark:bg-indigo-800 p-3 text-white text-center font-bold">
+                Term 3 (Sep - Dec)
+              </div>
+              <div className="p-4">
+                <div className="grid grid-cols-7 gap-1 text-center text-sm mb-2">
+                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                    (day) => (
+                      <div
+                        key={day}
+                        className="font-medium text-indigo-800 dark:text-indigo-300"
+                      >
+                        {day}
+                      </div>
+                    )
+                  )}
+                </div>
+                <div className="grid grid-cols-7 gap-1">
+                  {Array.from({ length: 31 }).map((_, i) => {
+                    const date = i + 1;
+                    let className = "p-2 text-center rounded";
+                    if (date === 3)
+                      className += " bg-green-100 dark:bg-green-900 font-bold";
+                    if (date >= 18 && date <= 21)
+                      className += " bg-yellow-100 dark:bg-yellow-900";
+                    if (date === 15)
+                      className += " bg-purple-100 dark:bg-purple-900";
+                    if (date === 6)
+                      className += " bg-pink-100 dark:bg-pink-900";
+                    return (
+                      <div key={date} className={className}>
+                        {date <= 31 ? date : ""}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-4 text-sm space-y-2">
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-green-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      School Reopens (Sep 3)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-yellow-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      Mid-Term Break (Oct 18-21)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-purple-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      Parents-Teacher Conf (Nov 15)
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-3 h-3 bg-pink-500 mr-2 rounded-full"></div>
+                    <span className="dark:text-gray-300">
+                      Prize-Giving Day (Dec 6)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
       </motion.section>
@@ -170,14 +423,14 @@ export default function AcademicCalendarPage() {
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
-          <FaBell className="text-3xl text-indigo-700 mr-4" />
-          <h2 className="text-2xl md:text-3xl font-bold text-indigo-900">
+          <FaBell className="text-3xl text-indigo-700 dark:text-indigo-400 mr-4" />
+          <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white">
             Key Events
           </h2>
         </motion.div>
 
         <motion.div
-          className="bg-white rounded-2xl shadow-xl overflow-hidden p-6 md:p-8"
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden p-6 md:p-8"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.9 }}
@@ -192,20 +445,20 @@ export default function AcademicCalendarPage() {
                 transition={{ delay: 1.0 + index * 0.1 }}
               >
                 <div className="flex flex-col items-center mr-6">
-                  <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
-                    <span className="text-indigo-800 font-bold">
+                  <div className="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center">
+                    <span className="text-indigo-800 dark:text-indigo-300 font-bold">
                       {event.date}
                     </span>
                   </div>
                   {index !== academicYear.keyEvents.length - 1 && (
-                    <div className="w-0.5 h-full bg-indigo-200 my-2"></div>
+                    <div className="w-0.5 h-full bg-indigo-200 dark:bg-indigo-700 my-2"></div>
                   )}
                 </div>
                 <div className="pb-8">
-                  <h3 className="text-lg md:text-xl font-semibold text-indigo-900 mb-2">
+                  <h3 className="text-lg md:text-xl font-semibold text-indigo-900 dark:text-white mb-2">
                     {event.event}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-400">
                     Mark your calendars for this important school event
                   </p>
                 </div>
@@ -215,39 +468,15 @@ export default function AcademicCalendarPage() {
         </motion.div>
       </motion.section>
 
-      {/* Visual Calendar & Downloads */}
+      {/* Downloads Section */}
       <motion.section
-        className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"
+        className="max-w-6xl mx-auto mb-12"
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ delay: 0.7 }}
       >
         <motion.div
-          className="bg-white rounded-2xl shadow-xl overflow-hidden"
-          initial={{ x: -50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 0.9 }}
-        >
-          <div className="p-6 md:p-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 mb-6">
-              Visual Calendar
-            </h2>
-            <div className="aspect-w-16 aspect-h-9 relative rounded-xl overflow-hidden border border-gray-200">
-              <Image
-                src="/calendar-visual.jpg"
-                alt="Academic Calendar Visual"
-                fill
-                className="object-cover"
-              />
-            </div>
-            <p className="mt-4 text-gray-600 text-center">
-              A visual overview of the academic year's key dates and events
-            </p>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="bg-indigo-900 text-white rounded-2xl shadow-xl overflow-hidden"
+          className="bg-indigo-900 dark:bg-indigo-950 text-white rounded-2xl shadow-xl overflow-hidden"
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.9 }}
@@ -274,7 +503,7 @@ export default function AcademicCalendarPage() {
               </span>
             </motion.a>
 
-            <div className="bg-indigo-800 rounded-lg p-4">
+            <div className="bg-indigo-800 dark:bg-indigo-900 rounded-lg p-4">
               <h3 className="font-semibold mb-2 flex items-center">
                 <FaExclamationTriangle className="text-yellow-400 mr-2" />
                 Important Note
@@ -291,42 +520,42 @@ export default function AcademicCalendarPage() {
 
       {/* School Holidays */}
       <motion.section
-        className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-12"
+        className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8 mb-12"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.1 }}
       >
-        <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white mb-6">
           Public Holidays & Breaks
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-xl font-semibold text-indigo-800 mb-4">
+            <h3 className="text-xl font-semibold text-indigo-800 dark:text-indigo-300 mb-4">
               National Holidays
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <span className="text-yellow-500 mr-2">•</span>
-                <span>
+                <span className="dark:text-gray-300">
                   <span className="font-medium">March 7:</span> Independence Day
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="text-yellow-500 mr-2">•</span>
-                <span>
+                <span className="dark:text-gray-300">
                   <span className="font-medium">May 1:</span> Workers' Day
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="text-yellow-500 mr-2">•</span>
-                <span>
+                <span className="dark:text-gray-300">
                   <span className="font-medium">July 1:</span> Republic Day
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="text-yellow-500 mr-2">•</span>
-                <span>
+                <span className="dark:text-gray-300">
                   <span className="font-medium">December 25:</span> Christmas
                   Day
                 </span>
@@ -335,34 +564,34 @@ export default function AcademicCalendarPage() {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-indigo-800 mb-4">
+            <h3 className="text-xl font-semibold text-indigo-800 dark:text-indigo-300 mb-4">
               School Breaks
             </h3>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
-                <span>
+                <span className="dark:text-gray-300">
                   <span className="font-medium">April 12 - May 5:</span> Term 1
                   Vacation
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
-                <span>
+                <span className="dark:text-gray-300">
                   <span className="font-medium">August 1 - September 2:</span>{" "}
                   Term 2 Vacation
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
-                <span>
+                <span className="dark:text-gray-300">
                   <span className="font-medium">December 7 - January 8:</span>{" "}
                   Term 3 Vacation
                 </span>
               </li>
               <li className="flex items-start">
                 <span className="text-blue-500 mr-2">•</span>
-                <span>
+                <span className="dark:text-gray-300">
                   <span className="font-medium">All Mid-Term Breaks:</span> See
                   term dates above
                 </span>

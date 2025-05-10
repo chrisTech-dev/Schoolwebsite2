@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import {
   FaDownload,
@@ -27,6 +27,25 @@ export default function ApplyPage() {
     photo: null,
     birthCert: null,
   });
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check for dark mode preference
+    const darkModeMediaQuery = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    );
+    setIsDarkMode(darkModeMediaQuery.matches);
+
+    const handleDarkModeChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    darkModeMediaQuery.addEventListener("change", handleDarkModeChange);
+
+    return () => {
+      darkModeMediaQuery.removeEventListener("change", handleDarkModeChange);
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -44,7 +63,9 @@ export default function ApplyPage() {
 
   return (
     <div
-      className="bg-gradient-to-b from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8"
+      className={`${
+        isDarkMode ? "dark" : ""
+      } bg-gradient-to-b from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8`}
       ref={ref}
     >
       {/* Hero Section */}
@@ -55,12 +76,15 @@ export default function ApplyPage() {
         transition={{ duration: 0.8 }}
       >
         <motion.h1
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-indigo-900 mb-6"
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-indigo-900 dark:text-white mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          Apply to <span className="text-yellow-600">Hanvil Academy</span>
+          Apply to{" "}
+          <span className="text-yellow-600 dark:text-yellow-400">
+            Hanvil Academy
+          </span>
         </motion.h1>
 
         <motion.div
@@ -69,8 +93,8 @@ export default function ApplyPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="absolute -inset-4 bg-blue-100 rounded-xl opacity-0 group-hover:opacity-100 blur-md transition duration-300"></div>
-          <p className="text-xl md:text-2xl text-gray-700 leading-relaxed relative z-10">
+          <div className="absolute -inset-4 bg-blue-100 dark:bg-gray-800 rounded-xl opacity-0 group-hover:opacity-100 blur-md transition duration-300"></div>
+          <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed relative z-10">
             "We welcome applications for Kindergarten, Primary, and Junior High
             School levels. Follow the steps below to apply and give your child
             the best foundation for the future."
@@ -92,12 +116,12 @@ export default function ApplyPage() {
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ delay: 0.3 }}
       >
-        <div className="flex overflow-hidden rounded-xl bg-white shadow-lg mb-8">
+        <div className="flex overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow-lg mb-8">
           <button
             className={`flex-1 px-6 py-4 font-medium transition-all duration-300 ${
               activeTab === "download"
                 ? "bg-indigo-600 text-white"
-                : "text-indigo-700 hover:bg-indigo-50"
+                : "text-indigo-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-gray-700"
             }`}
             onClick={() => setActiveTab("download")}
           >
@@ -108,7 +132,7 @@ export default function ApplyPage() {
             className={`flex-1 px-6 py-4 font-medium transition-all duration-300 ${
               activeTab === "online"
                 ? "bg-indigo-600 text-white"
-                : "text-indigo-700 hover:bg-indigo-50"
+                : "text-indigo-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-gray-700"
             }`}
             onClick={() => setActiveTab("online")}
           >
@@ -120,7 +144,7 @@ export default function ApplyPage() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
-            className="bg-white rounded-2xl shadow-xl overflow-hidden"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -133,7 +157,7 @@ export default function ApplyPage() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white mb-6">
                     Download Admission Form
                   </h2>
 
@@ -150,14 +174,14 @@ export default function ApplyPage() {
                     </span>
                   </motion.a>
 
-                  <div className="bg-blue-50 rounded-xl p-6 mb-8">
-                    <h3 className="text-xl font-semibold text-indigo-800 mb-4">
+                  <div className="bg-blue-50 dark:bg-gray-700 rounded-xl p-6 mb-8">
+                    <h3 className="text-xl font-semibold text-indigo-800 dark:text-white mb-4">
                       <FaCheckCircle className="inline text-green-600 mr-2" />
                       How to Apply
                     </h3>
                     <ol className="space-y-4 pl-6">
                       <motion.li
-                        className="text-gray-700"
+                        className="text-gray-700 dark:text-gray-300"
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.6 }}
@@ -168,7 +192,7 @@ export default function ApplyPage() {
                         the admission form
                       </motion.li>
                       <motion.li
-                        className="text-gray-700"
+                        className="text-gray-700 dark:text-gray-300"
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.7 }}
@@ -182,7 +206,7 @@ export default function ApplyPage() {
                         </ul>
                       </motion.li>
                       <motion.li
-                        className="text-gray-700"
+                        className="text-gray-700 dark:text-gray-300"
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.8 }}
@@ -198,7 +222,7 @@ export default function ApplyPage() {
                         </ul>
                       </motion.li>
                       <motion.li
-                        className="text-gray-700"
+                        className="text-gray-700 dark:text-gray-300"
                         initial={{ x: -20, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.9 }}
@@ -213,7 +237,7 @@ export default function ApplyPage() {
                           </li>
                           <li>
                             Via email to{" "}
-                            <span className="text-blue-600">
+                            <span className="text-blue-600 dark:text-blue-400">
                               admissions@hanvilacademy.edu.gh
                             </span>
                           </li>
@@ -230,7 +254,7 @@ export default function ApplyPage() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 mb-6">
+                  <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white mb-6">
                     Online Application
                   </h2>
 
@@ -242,7 +266,7 @@ export default function ApplyPage() {
                         transition={{ delay: 0.5 }}
                       >
                         <label
-                          className="block text-gray-700 mb-2 font-medium"
+                          className="block text-gray-700 dark:text-gray-300 mb-2 font-medium"
                           htmlFor="childName"
                         >
                           Full Name of Child
@@ -253,7 +277,7 @@ export default function ApplyPage() {
                           name="childName"
                           value={formData.childName}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                           required
                         />
                       </motion.div>
@@ -264,7 +288,7 @@ export default function ApplyPage() {
                         transition={{ delay: 0.6 }}
                       >
                         <label
-                          className="block text-gray-700 mb-2 font-medium"
+                          className="block text-gray-700 dark:text-gray-300 mb-2 font-medium"
                           htmlFor="dob"
                         >
                           Date of Birth
@@ -275,7 +299,7 @@ export default function ApplyPage() {
                           name="dob"
                           value={formData.dob}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                           required
                         />
                       </motion.div>
@@ -286,7 +310,7 @@ export default function ApplyPage() {
                         transition={{ delay: 0.7 }}
                       >
                         <label
-                          className="block text-gray-700 mb-2 font-medium"
+                          className="block text-gray-700 dark:text-gray-300 mb-2 font-medium"
                           htmlFor="parentName"
                         >
                           Parent/Guardian Name
@@ -297,7 +321,7 @@ export default function ApplyPage() {
                           name="parentName"
                           value={formData.parentName}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                           required
                         />
                       </motion.div>
@@ -308,7 +332,7 @@ export default function ApplyPage() {
                         transition={{ delay: 0.8 }}
                       >
                         <label
-                          className="block text-gray-700 mb-2 font-medium"
+                          className="block text-gray-700 dark:text-gray-300 mb-2 font-medium"
                           htmlFor="phone"
                         >
                           Phone Number
@@ -319,7 +343,7 @@ export default function ApplyPage() {
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                           required
                         />
                       </motion.div>
@@ -330,7 +354,7 @@ export default function ApplyPage() {
                         transition={{ delay: 0.9 }}
                       >
                         <label
-                          className="block text-gray-700 mb-2 font-medium"
+                          className="block text-gray-700 dark:text-gray-300 mb-2 font-medium"
                           htmlFor="email"
                         >
                           Email Address
@@ -341,7 +365,7 @@ export default function ApplyPage() {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                           required
                         />
                       </motion.div>
@@ -352,7 +376,7 @@ export default function ApplyPage() {
                         transition={{ delay: 1.0 }}
                       >
                         <label
-                          className="block text-gray-700 mb-2 font-medium"
+                          className="block text-gray-700 dark:text-gray-300 mb-2 font-medium"
                           htmlFor="classLevel"
                         >
                           Class Applying For
@@ -362,7 +386,7 @@ export default function ApplyPage() {
                           name="classLevel"
                           value={formData.classLevel}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                           required
                         >
                           <option value="">Select Class</option>
@@ -386,7 +410,7 @@ export default function ApplyPage() {
                         transition={{ delay: 1.1 }}
                       >
                         <label
-                          className="block text-gray-700 mb-2 font-medium"
+                          className="block text-gray-700 dark:text-gray-300 mb-2 font-medium"
                           htmlFor="photo"
                         >
                           Passport Photo (JPEG/PNG)
@@ -397,7 +421,7 @@ export default function ApplyPage() {
                           name="photo"
                           onChange={handleChange}
                           accept="image/*"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                           required
                         />
                       </motion.div>
@@ -408,7 +432,7 @@ export default function ApplyPage() {
                         transition={{ delay: 1.2 }}
                       >
                         <label
-                          className="block text-gray-700 mb-2 font-medium"
+                          className="block text-gray-700 dark:text-gray-300 mb-2 font-medium"
                           htmlFor="birthCert"
                         >
                           Birth Certificate (PDF/Image)
@@ -419,22 +443,22 @@ export default function ApplyPage() {
                           name="birthCert"
                           onChange={handleChange}
                           accept=".pdf,.jpg,.jpeg,.png"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
                           required
                         />
                       </motion.div>
                     </div>
 
                     <motion.div
-                      className="bg-blue-50 rounded-xl p-6 mb-8"
+                      className="bg-blue-50 dark:bg-gray-700 rounded-xl p-6 mb-8"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 1.3 }}
                     >
-                      <h3 className="text-lg font-semibold text-indigo-800 mb-3">
+                      <h3 className="text-lg font-semibold text-indigo-800 dark:text-white mb-3">
                         Required Documents
                       </h3>
-                      <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                      <ul className="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
                         <li>
                           1 recent passport photograph of the child (max 2MB)
                         </li>
@@ -470,33 +494,33 @@ export default function ApplyPage() {
         transition={{ delay: 0.5 }}
       >
         <motion.div
-          className="bg-white rounded-2xl shadow-xl p-6 md:p-8"
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
           <div className="flex items-center mb-6">
-            <FaCalendarAlt className="text-3xl text-indigo-600 mr-4" />
-            <h2 className="text-2xl md:text-3xl font-bold text-indigo-900">
+            <FaCalendarAlt className="text-3xl text-indigo-600 dark:text-indigo-400 mr-4" />
+            <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white">
               Admission Period
             </h2>
           </div>
 
           <div className="space-y-4">
-            <p className="text-gray-700">
+            <p className="text-gray-700 dark:text-gray-300">
               Admissions are open from{" "}
               <span className="font-semibold">May to August</span> each year for
               the upcoming academic term beginning in September.
             </p>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <p className="text-yellow-800 font-medium">
+            <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+              <p className="text-yellow-800 dark:text-yellow-200 font-medium">
                 <span className="font-bold">Early application discount:</span>{" "}
                 10% off tuition for applications submitted before June 30.
               </p>
             </div>
 
-            <p className="text-gray-700">
+            <p className="text-gray-700 dark:text-gray-300">
               Spaces are limited in each class — we recommend applying early to
               secure your child's place.
             </p>
@@ -554,50 +578,60 @@ export default function ApplyPage() {
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ delay: 0.9 }}
       >
-        <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white mb-6">
           What Happens After You Apply?
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <motion.div
-            className="bg-white p-6 rounded-xl shadow-lg"
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0 }}
           >
-            <div className="text-4xl font-bold text-indigo-600 mb-3">1</div>
-            <h3 className="text-xl font-semibold mb-2">Application Review</h3>
-            <p className="text-gray-600">
+            <div className="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-3">
+              1
+            </div>
+            <h3 className="text-xl font-semibold mb-2 dark:text-white">
+              Application Review
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
               Our team will review your application within 3-5 working days and
               contact you if any information is missing.
             </p>
           </motion.div>
 
           <motion.div
-            className="bg-white p-6 rounded-xl shadow-lg"
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.1 }}
           >
-            <div className="text-4xl font-bold text-indigo-600 mb-3">2</div>
-            <h3 className="text-xl font-semibold mb-2">
+            <div className="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-3">
+              2
+            </div>
+            <h3 className="text-xl font-semibold mb-2 dark:text-white">
               Assessment & Interview
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300">
               For certain grade levels, we may schedule a simple assessment or
               interview with the child and parents.
             </p>
           </motion.div>
 
           <motion.div
-            className="bg-white p-6 rounded-xl shadow-lg"
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2 }}
           >
-            <div className="text-4xl font-bold text-indigo-600 mb-3">3</div>
-            <h3 className="text-xl font-semibold mb-2">Admission Decision</h3>
-            <p className="text-gray-600">
+            <div className="text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-3">
+              3
+            </div>
+            <h3 className="text-xl font-semibold mb-2 dark:text-white">
+              Admission Decision
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300">
               You'll receive an official response within 10 working days, along
               with next steps for enrollment if accepted.
             </p>

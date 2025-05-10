@@ -38,6 +38,7 @@ export default function CurriculumPage() {
 
   const [activeTab, setActiveTab] = useState("kg");
   const [isMobile, setIsMobile] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -45,7 +46,23 @@ export default function CurriculumPage() {
     };
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    // Check for dark mode preference
+    const darkModeMediaQuery = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    );
+    setIsDarkMode(darkModeMediaQuery.matches);
+
+    const handleDarkModeChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    darkModeMediaQuery.addEventListener("change", handleDarkModeChange);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      darkModeMediaQuery.removeEventListener("change", handleDarkModeChange);
+    };
   }, []);
 
   // Image paths for each curriculum level
@@ -189,7 +206,9 @@ export default function CurriculumPage() {
 
   return (
     <div
-      className="bg-gradient-to-b from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className={`${
+        isDarkMode ? "dark" : ""
+      } bg-gradient-to-b from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8 overflow-hidden`}
       ref={pageRef}
     >
       {/* Hero Section with parallax effect */}
@@ -198,30 +217,33 @@ export default function CurriculumPage() {
         style={{ y: parallaxY }}
       >
         <motion.div
-          className="absolute -top-20 -left-20 w-40 h-40 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"
+          className="absolute -top-20 -left-20 w-40 h-40 bg-blue-200 dark:bg-blue-900 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-20 animate-blob"
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, duration: 1 }}
         />
         <motion.div
-          className="absolute -bottom-20 -right-20 w-40 h-40 bg-yellow-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"
+          className="absolute -bottom-20 -right-20 w-40 h-40 bg-yellow-200 dark:bg-yellow-600 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-20 animate-blob animation-delay-2000"
           animate={{ scale: 1 }}
           transition={{ delay: 0.4, duration: 1 }}
         />
         <motion.div
-          className="absolute top-0 right-0 w-40 h-40 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"
+          className="absolute top-0 right-0 w-40 h-40 bg-indigo-200 dark:bg-purple-900 rounded-full mix-blend-multiply filter blur-xl opacity-70 dark:opacity-20 animate-blob animation-delay-4000"
           animate={{ scale: 1 }}
           transition={{ delay: 0.6, duration: 1 }}
         />
 
         <motion.h1
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-indigo-900 mb-6 relative z-10"
+          className="text-4xl md:text-5xl lg:text-6xl font-bold text-indigo-900 dark:text-white mb-6 relative z-10"
           animate={{ y: 0 }}
           transition={{
             duration: 0.8,
             ease: [0.6, -0.05, 0.01, 0.99],
           }}
         >
-          Our <span className="text-yellow-600">Curriculum</span>
+          Our{" "}
+          <span className="text-yellow-600 dark:text-yellow-400">
+            Curriculum
+          </span>
         </motion.h1>
 
         <motion.div
@@ -232,8 +254,8 @@ export default function CurriculumPage() {
             ease: [0.6, -0.05, 0.01, 0.99],
           }}
         >
-          <div className="absolute -inset-4 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl opacity-0 group-hover:opacity-100 blur-md transition duration-500"></div>
-          <p className="text-xl md:text-2xl text-gray-700 leading-relaxed relative z-10">
+          <div className="absolute -inset-4 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-gray-800 dark:to-gray-700 rounded-xl opacity-0 group-hover:opacity-100 blur-md transition duration-500"></div>
+          <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed relative z-10">
             At our school, our curriculum is designed to develop well-rounded
             learners — intellectually, socially, and morally. We follow the
             Ghana Education Service (GES) standards while enriching students'
@@ -258,7 +280,7 @@ export default function CurriculumPage() {
         <motion.section className="max-w-6xl mx-auto mb-20">
           <div className="flex flex-col items-center mb-12">
             <motion.h2
-              className="text-3xl md:text-4xl font-bold text-indigo-900 mb-8 text-center"
+              className="text-3xl md:text-4xl font-bold text-indigo-900 dark:text-white mb-8 text-center"
               transition={{
                 delay: 0.5,
                 type: "spring",
@@ -271,7 +293,7 @@ export default function CurriculumPage() {
 
             {!isMobile && (
               <motion.div
-                className="flex overflow-hidden rounded-xl bg-white shadow-lg mb-8"
+                className="flex overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow-lg mb-8"
                 transition={{
                   delay: 0.7,
                   type: "spring",
@@ -285,7 +307,7 @@ export default function CurriculumPage() {
                     className={`px-6 py-3 md:px-8 md:py-4 font-medium text-sm md:text-base transition-all duration-300 ${
                       activeTab === key
                         ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
-                        : "text-indigo-700 hover:bg-indigo-50"
+                        : "text-indigo-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-gray-700"
                     }`}
                     onClick={() => setActiveTab(key)}
                     whileHover={{ scale: 1.05 }}
@@ -300,7 +322,7 @@ export default function CurriculumPage() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
-                className="w-full bg-white rounded-2xl shadow-xl overflow-hidden"
+                className="w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
                 animate={{
                   y: 0,
                   transition: {
@@ -319,7 +341,7 @@ export default function CurriculumPage() {
                   <div className="flex flex-col md:flex-row gap-8">
                     <div className="md:w-1/3">
                       <motion.h3
-                        className="text-2xl font-bold text-indigo-900 mb-2"
+                        className="text-2xl font-bold text-indigo-900 dark:text-white mb-2"
                         transition={{
                           delay: 0.2,
                           type: "spring",
@@ -328,7 +350,7 @@ export default function CurriculumPage() {
                         }}
                       >
                         {curriculum[activeTab].title}
-                        <span className="text-yellow-600">
+                        <span className="text-yellow-600 dark:text-yellow-400">
                           {" "}
                           ({curriculum[activeTab].grades})
                         </span>
@@ -360,7 +382,7 @@ export default function CurriculumPage() {
                     <div className="md:w-2/3">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <h4 className="text-lg font-semibold text-indigo-800 mb-3 border-b border-indigo-200 pb-2">
+                          <h4 className="text-lg font-semibold text-indigo-800 dark:text-gray-300 mb-3 border-b border-indigo-200 dark:border-gray-700 pb-2">
                             Core Subjects
                           </h4>
                           <ul className="space-y-2">
@@ -377,10 +399,12 @@ export default function CurriculumPage() {
                                   }}
                                   whileHover={{ x: 5 }}
                                 >
-                                  <span className="text-yellow-500 mr-2">
+                                  <span className="text-yellow-500 dark:text-yellow-400 mr-2">
                                     •
                                   </span>
-                                  <span>{subject}</span>
+                                  <span className="dark:text-gray-300">
+                                    {subject}
+                                  </span>
                                 </motion.li>
                               )
                             )}
@@ -388,7 +412,7 @@ export default function CurriculumPage() {
                         </div>
 
                         <div>
-                          <h4 className="text-lg font-semibold text-indigo-800 mb-3 border-b border-indigo-200 pb-2">
+                          <h4 className="text-lg font-semibold text-indigo-800 dark:text-gray-300 mb-3 border-b border-indigo-200 dark:border-gray-700 pb-2">
                             Learning Focus
                           </h4>
                           <ul className="space-y-2">
@@ -404,15 +428,19 @@ export default function CurriculumPage() {
                                 }}
                                 whileHover={{ x: 5 }}
                               >
-                                <span className="text-blue-500 mr-2">•</span>
-                                <span>{item}</span>
+                                <span className="text-blue-500 dark:text-blue-400 mr-2">
+                                  •
+                                </span>
+                                <span className="dark:text-gray-300">
+                                  {item}
+                                </span>
                               </motion.li>
                             ))}
                           </ul>
                         </div>
 
                         <div className="md:col-span-2">
-                          <h4 className="text-lg font-semibold text-indigo-800 mb-3 border-b border-indigo-200 pb-2">
+                          <h4 className="text-lg font-semibold text-indigo-800 dark:text-gray-300 mb-3 border-b border-indigo-200 dark:border-gray-700 pb-2">
                             Teaching Methods
                           </h4>
                           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
@@ -420,7 +448,7 @@ export default function CurriculumPage() {
                               (method, index) => (
                                 <motion.div
                                   key={index}
-                                  className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg p-3 text-center border border-indigo-100"
+                                  className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-gray-700 dark:to-gray-600 rounded-lg p-3 text-center border border-indigo-100 dark:border-gray-600"
                                   transition={{
                                     delay: 0.8 + index * 0.1,
                                     type: "spring",
@@ -434,7 +462,7 @@ export default function CurriculumPage() {
                                       "linear-gradient(to bottom right, #e0e7ff, #c7d2fe)",
                                   }}
                                 >
-                                  <p className="text-sm font-medium text-indigo-800">
+                                  <p className="text-sm font-medium text-indigo-800 dark:text-gray-200">
                                     {method}
                                   </p>
                                 </motion.div>
@@ -474,7 +502,7 @@ export default function CurriculumPage() {
               </div>
               <ul
                 tabIndex={0}
-                className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mb-2"
+                className="dropdown-content z-[1] menu p-2 shadow bg-white dark:bg-gray-800 rounded-box w-52 mb-2"
               >
                 {Object.keys(curriculum).map((key) => (
                   <motion.li
@@ -482,8 +510,8 @@ export default function CurriculumPage() {
                     transition={{ delay: 0.1 * parseInt(key) }}
                   >
                     <button
-                      className={`text-left ${
-                        activeTab === key ? "active" : ""
+                      className={`text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                        activeTab === key ? "bg-gray-100 dark:bg-gray-700" : ""
                       }`}
                       onClick={() => setActiveTab(key)}
                     >
@@ -499,7 +527,7 @@ export default function CurriculumPage() {
         {/* Core Subjects Section with staggered animations */}
         <motion.section className="max-w-6xl mx-auto mb-20">
           <motion.h2
-            className="text-3xl md:text-4xl font-bold text-center text-indigo-900 mb-12"
+            className="text-3xl md:text-4xl font-bold text-center text-indigo-900 dark:text-white mb-12"
             transition={{
               delay: 0.7,
               type: "spring",
@@ -507,14 +535,17 @@ export default function CurriculumPage() {
               damping: 10,
             }}
           >
-            Core <span className="text-yellow-600">Subjects</span>
+            Core{" "}
+            <span className="text-yellow-600 dark:text-yellow-400">
+              Subjects
+            </span>
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             {coreSubjects.map((subject, index) => (
               <motion.div
                 key={index}
-                className="bg-white rounded-xl shadow-lg overflow-hidden"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
                 transition={{
                   delay: 0.8 + index * 0.1,
                   type: "spring",
@@ -529,7 +560,7 @@ export default function CurriculumPage() {
               >
                 <div className="p-6 text-center">
                   <motion.div
-                    className="w-16 h-16 mx-auto mb-4 flex items-center justify-center text-indigo-600"
+                    className="w-16 h-16 mx-auto mb-4 flex items-center justify-center text-indigo-600 dark:text-indigo-400"
                     whileHover={{
                       scale: 1.1,
                       rotate: 5,
@@ -537,19 +568,21 @@ export default function CurriculumPage() {
                   >
                     {subject.icon}
                   </motion.div>
-                  <h3 className="text-xl font-bold text-indigo-900 mb-3">
+                  <h3 className="text-xl font-bold text-indigo-900 dark:text-white mb-3">
                     {subject.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">{subject.description}</p>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">
+                    {subject.description}
+                  </p>
                 </div>
                 <motion.div
-                  className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 text-center"
+                  className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 p-4 text-center"
                   whileHover={{
                     background: "linear-gradient(to right, #e0e7ff, #c7d2fe)",
                   }}
                 >
                   <motion.button
-                    className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+                    className="text-sm font-medium text-indigo-600 dark:text-indigo-300 hover:text-indigo-800 dark:hover:text-indigo-200 transition-colors"
                     whileHover={{ x: 5 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -631,7 +664,7 @@ export default function CurriculumPage() {
             </motion.div>
 
             <motion.div
-              className="md:w-1/2 bg-white rounded-2xl shadow-xl overflow-hidden"
+              className="md:w-1/2 bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
               transition={{
                 delay: 0.9,
                 type: "spring",
@@ -651,9 +684,9 @@ export default function CurriculumPage() {
                       scale: 1.1,
                     }}
                   >
-                    <FaGlobe className="text-3xl text-indigo-600 mr-4" />
+                    <FaGlobe className="text-3xl text-indigo-600 dark:text-indigo-400 mr-4" />
                   </motion.div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-indigo-900">
+                  <h2 className="text-2xl md:text-3xl font-bold text-indigo-900 dark:text-white">
                     Enrichment Programs
                   </h2>
                 </div>
@@ -662,7 +695,7 @@ export default function CurriculumPage() {
                   {enrichmentPrograms.map((program, index) => (
                     <motion.div
                       key={index}
-                      className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg p-4 flex items-start border border-indigo-100"
+                      className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 flex items-start border border-indigo-100 dark:border-gray-600"
                       transition={{
                         delay: 1.1 + index * 0.05,
                         type: "spring",
@@ -675,8 +708,10 @@ export default function CurriculumPage() {
                           "linear-gradient(to bottom right, #e0e7ff, #c7d2fe)",
                       }}
                     >
-                      <span className="text-yellow-500 mr-2 mt-1">•</span>
-                      <span className="text-indigo-800 font-medium">
+                      <span className="text-yellow-500 dark:text-yellow-400 mr-2 mt-1">
+                        •
+                      </span>
+                      <span className="text-indigo-800 dark:text-gray-200 font-medium">
                         {program}
                       </span>
                     </motion.div>
@@ -684,34 +719,40 @@ export default function CurriculumPage() {
                 </div>
 
                 <motion.div
-                  className="mt-8 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl p-4 border border-indigo-200"
+                  className="mt-8 bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-gray-700 dark:to-gray-600 rounded-xl p-4 border border-indigo-200 dark:border-gray-600"
                   whileHover={{
                     background: "linear-gradient(to right, #e0e7ff, #c7d2fe)",
                   }}
                 >
-                  <h3 className="text-lg font-semibold text-indigo-900 mb-2">
+                  <h3 className="text-lg font-semibold text-indigo-900 dark:text-white mb-2">
                     Special Features
                   </h3>
-                  <ul className="space-y-2 text-indigo-700">
+                  <ul className="space-y-2 text-indigo-700 dark:text-gray-300">
                     <motion.li
                       className="flex items-start"
                       whileHover={{ x: 5 }}
                     >
-                      <span className="text-indigo-500 mr-2">✓</span>
+                      <span className="text-indigo-500 dark:text-indigo-400 mr-2">
+                        ✓
+                      </span>
                       <span>Weekly French language classes from Basic 4</span>
                     </motion.li>
                     <motion.li
                       className="flex items-start"
                       whileHover={{ x: 5 }}
                     >
-                      <span className="text-indigo-500 mr-2">✓</span>
+                      <span className="text-indigo-500 dark:text-indigo-400 mr-2">
+                        ✓
+                      </span>
                       <span>Annual STEM Fair showcasing student projects</span>
                     </motion.li>
                     <motion.li
                       className="flex items-start"
                       whileHover={{ x: 5 }}
                     >
-                      <span className="text-indigo-500 mr-2">✓</span>
+                      <span className="text-indigo-500 dark:text-indigo-400 mr-2">
+                        ✓
+                      </span>
                       <span>
                         Entrepreneurship Day with real business simulations
                       </span>
@@ -725,7 +766,7 @@ export default function CurriculumPage() {
 
         {/* Assessment Section with advanced animations */}
         <motion.section
-          className="max-w-6xl mx-auto mb-20 bg-white rounded-2xl shadow-xl overflow-hidden"
+          className="max-w-6xl mx-auto mb-20 bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden"
           whileHover={{
             boxShadow:
               "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
@@ -795,7 +836,7 @@ export default function CurriculumPage() {
 
             <div className="md:w-1/2 p-6 md:p-8">
               <div>
-                <h3 className="text-2xl font-bold text-indigo-900 mb-6">
+                <h3 className="text-2xl font-bold text-indigo-900 dark:text-white mb-6">
                   Progress Reporting
                 </h3>
 
@@ -805,19 +846,19 @@ export default function CurriculumPage() {
                     whileHover={{ x: 5 }}
                   >
                     <motion.div
-                      className="bg-blue-100 rounded-full p-3 mr-4"
+                      className="bg-blue-100 dark:bg-blue-900 rounded-full p-3 mr-4"
                       whileHover={{
                         rotate: 10,
                         scale: 1.1,
                       }}
                     >
-                      <FaBook className="text-blue-600 text-xl" />
+                      <FaBook className="text-blue-600 dark:text-blue-300 text-xl" />
                     </motion.div>
                     <div>
-                      <h4 className="text-lg font-semibold text-indigo-800 mb-2">
+                      <h4 className="text-lg font-semibold text-indigo-800 dark:text-white mb-2">
                         Detailed Report Cards
                       </h4>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-400">
                         Issued every term with academic performance, teacher
                         comments, and improvement recommendations.
                       </p>
@@ -829,19 +870,19 @@ export default function CurriculumPage() {
                     whileHover={{ x: 5 }}
                   >
                     <motion.div
-                      className="bg-indigo-100 rounded-full p-3 mr-4"
+                      className="bg-indigo-100 dark:bg-indigo-900 rounded-full p-3 mr-4"
                       whileHover={{
                         rotate: 10,
                         scale: 1.1,
                       }}
                     >
-                      <FaUsers className="text-indigo-600 text-xl" />
+                      <FaUsers className="text-indigo-600 dark:text-indigo-300 text-xl" />
                     </motion.div>
                     <div>
-                      <h4 className="text-lg font-semibold text-indigo-800 mb-2">
+                      <h4 className="text-lg font-semibold text-indigo-800 dark:text-white mb-2">
                         Parent-Teacher Conferences
                       </h4>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-400">
                         Held twice per term to discuss student progress and
                         development strategies.
                       </p>
@@ -853,19 +894,19 @@ export default function CurriculumPage() {
                     whileHover={{ x: 5 }}
                   >
                     <motion.div
-                      className="bg-green-100 rounded-full p-3 mr-4"
+                      className="bg-green-100 dark:bg-green-900 rounded-full p-3 mr-4"
                       whileHover={{
                         rotate: 10,
                         scale: 1.1,
                       }}
                     >
-                      <FaRunning className="text-green-600 text-xl" />
+                      <FaRunning className="text-green-600 dark:text-green-300 text-xl" />
                     </motion.div>
                     <div>
-                      <h4 className="text-lg font-semibold text-indigo-800 mb-2">
+                      <h4 className="text-lg font-semibold text-indigo-800 dark:text-white mb-2">
                         Holistic Evaluation
                       </h4>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 dark:text-gray-400">
                         Assessments include academic performance, character
                         development, and extracurricular participation.
                       </p>
@@ -882,7 +923,7 @@ export default function CurriculumPage() {
           <div className="flex flex-col md:flex-row gap-8 mb-12">
             <div className="md:w-2/3">
               <motion.h2
-                className="text-3xl md:text-4xl font-bold text-indigo-900 mb-8"
+                className="text-3xl md:text-4xl font-bold text-indigo-900 dark:text-white mb-8"
                 transition={{
                   delay: 1.3,
                   type: "spring",
@@ -890,7 +931,10 @@ export default function CurriculumPage() {
                   damping: 10,
                 }}
               >
-                Learning <span className="text-yellow-600">In Action</span>
+                Learning{" "}
+                <span className="text-yellow-600 dark:text-yellow-400">
+                  In Action
+                </span>
               </motion.h2>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
@@ -931,7 +975,7 @@ export default function CurriculumPage() {
 
             <div className="md:w-1/3">
               <motion.div
-                className="bg-white rounded-2xl shadow-xl p-6 sticky top-6"
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sticky top-6"
                 transition={{
                   delay: 1.5,
                   type: "spring",
@@ -943,7 +987,7 @@ export default function CurriculumPage() {
                     "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
                 }}
               >
-                <h3 className="text-2xl font-bold text-indigo-900 mb-6">
+                <h3 className="text-2xl font-bold text-indigo-900 dark:text-white mb-6">
                   Download Resources
                 </h3>
 
@@ -951,67 +995,73 @@ export default function CurriculumPage() {
                   <motion.a
                     href="/curriculum-brochure.pdf"
                     download
-                    className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-colors border border-indigo-100"
+                    className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 rounded-lg hover:from-blue-100 hover:to-indigo-100 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-colors border border-indigo-100 dark:border-gray-600"
                     whileHover={{ x: 5 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <div className="flex items-center">
-                      <FaDownload className="text-indigo-600 mr-3" />
-                      <span className="font-medium text-indigo-900">
+                      <FaDownload className="text-indigo-600 dark:text-indigo-400 mr-3" />
+                      <span className="font-medium text-indigo-900 dark:text-white">
                         Curriculum Brochure
                       </span>
                     </div>
-                    <span className="text-sm text-indigo-500">PDF</span>
+                    <span className="text-sm text-indigo-500 dark:text-indigo-300">
+                      PDF
+                    </span>
                   </motion.a>
 
                   <motion.a
                     href="/sample-timetable.pdf"
                     download
-                    className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-colors border border-indigo-100"
+                    className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 rounded-lg hover:from-blue-100 hover:to-indigo-100 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-colors border border-indigo-100 dark:border-gray-600"
                     whileHover={{ x: 5 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <div className="flex items-center">
-                      <FaDownload className="text-indigo-600 mr-3" />
-                      <span className="font-medium text-indigo-900">
+                      <FaDownload className="text-indigo-600 dark:text-indigo-400 mr-3" />
+                      <span className="font-medium text-indigo-900 dark:text-white">
                         Sample Timetable
                       </span>
                     </div>
-                    <span className="text-sm text-indigo-500">PDF</span>
+                    <span className="text-sm text-indigo-500 dark:text-indigo-300">
+                      PDF
+                    </span>
                   </motion.a>
 
                   <motion.a
                     href="/bece-guide.pdf"
                     download
-                    className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-colors border border-indigo-100"
+                    className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-600 rounded-lg hover:from-blue-100 hover:to-indigo-100 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-colors border border-indigo-100 dark:border-gray-600"
                     whileHover={{ x: 5 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <div className="flex items-center">
-                      <FaDownload className="text-indigo-600 mr-3" />
-                      <span className="font-medium text-indigo-900">
+                      <FaDownload className="text-indigo-600 dark:text-indigo-400 mr-3" />
+                      <span className="font-medium text-indigo-900 dark:text-white">
                         BECE Preparation Guide
                       </span>
                     </div>
-                    <span className="text-sm text-indigo-500">PDF</span>
+                    <span className="text-sm text-indigo-500 dark:text-indigo-300">
+                      PDF
+                    </span>
                   </motion.a>
                 </div>
 
                 <motion.div
-                  className="mt-8 bg-gradient-to-r from-yellow-50 to-amber-50 border border-yellow-200 rounded-lg p-4"
+                  className="mt-8 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/50 dark:to-amber-900/50 rounded-lg p-4 border border-yellow-200 dark:border-yellow-800"
                   whileHover={{
                     background: "linear-gradient(to right, #fef9c3, #fef08a)",
                   }}
                 >
-                  <h4 className="font-bold text-yellow-800 mb-2">
+                  <h4 className="font-bold text-yellow-800 dark:text-yellow-300 mb-2">
                     Need More Information?
                   </h4>
-                  <p className="text-yellow-700 text-sm">
+                  <p className="text-yellow-700 dark:text-yellow-200 text-sm">
                     Contact our academic office for detailed curriculum
                     documents or specific program inquiries.
                   </p>
                   <motion.button
-                    className="mt-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                    className="mt-3 bg-gradient-to-r from-yellow-500 to-amber-500 dark:from-yellow-600 dark:to-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
